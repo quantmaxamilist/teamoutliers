@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/page/PageHero.astro';
+import StrandBar from '../../components/page/StrandBar.astro';
+import Img from '../../components/site/Img.astro';
+import { titles, physio, brand } from '../../data/site';
+const { consult, rehab } = physio;
+---
+<Base title={titles.physio} description={physio.lead}>
+  <PageHero kicker="Team Outliers · Physiotherapy" title={physio.title} lead={physio.lead} img="physio-lunge" pos="50% 35%"
+    cta={[{ label: consult.cta, href: '/contact?package=physiotherapy' }, { label: `Call ${brand.physioPhone.display}`, href: `tel:${brand.physioPhone.tel}` }]} />
+  <StrandBar current="team-outliers" />
+
+  <section class="light section">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="stack">
+          <p class="label kicker" data-reveal>{physio.offerTitle}</p>
+          <h2 class="h-2" data-reveal>{consult.title}</h2>
+        </div>
+        <p class="lead" data-reveal>{consult.sub}</p>
+      </div>
+      <ol class="steps">
+        {consult.steps.map((s, i) => (
+          <li data-reveal>
+            <span class="steps__n">{i + 1}</span>
+            <h3 class="h-3" style="font-size:1.35rem">{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="consult__foot">
+        <div class="stack" data-reveal>
+          <p class="price">{consult.price}</p>
+          <a href="/contact?package=physiotherapy" class="btn btn--black">{consult.cta}</a>
+        </div>
+        <p class="mute" data-reveal>{consult.note}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark section">
+    <div class="wrap split">
+      <figure class="photo split__photo cut-r" data-reveal><Img name="physio-band" alt="Movement-based rehabilitation at Outliers" /></figure>
+      <div class="stack">
+        <h2 class="h-2" data-reveal>{rehab.title}</h2>
+        <p class="lead mute" data-reveal>{rehab.sub}</p>
+        <h3 class="label kicker" data-reveal>{rehab.includedTitle}</h3>
+        <ul class="ticks" data-reveal>{rehab.included.map((t) => <li>{t}</li>)}</ul>
+        <p class="mute" data-reveal>{rehab.app}</p>
+        <p class="h-3" style="font-size:1.35rem" data-reveal>{rehab.startTitle}</p>
+        <a href="/contact?package=physiotherapy" class="btn btn--coral" data-reveal>{rehab.cta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="enq coral section">
+    <div class="wrap physio-q">
+      <h2 class="h-2" data-reveal>{physio.questionsTitle}</h2>
+      <div class="stack" data-reveal>
+        <p class="lead" style="font-weight:500">{physio.questions}</p>
+        <div class="physio-q__cta">
+          <a href={`tel:${brand.physioPhone.tel}`} class="btn btn--black">Call {brand.physioPhone.display}</a>
+          <a href="/contact?package=physiotherapy" class="btn btn--white">{consult.cta}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); counter-reset: s; }
+  .steps li { background: var(--c-white); padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2); border-top: 4px solid var(--c-coral); }
+  .steps__n { font-family: var(--f-display); font-style: italic; font-weight: 900; font-size: var(--fs-display-2); line-height: 0.9; color: var(--c-coral); font-variation-settings: 'wdth' 125; }
+  .consult__foot { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--sp-5); align-items: center; margin-top: var(--sp-5); }
+  .consult__foot > p { max-width: 60ch; }
+  .physio-q { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); align-items: end; }
+  .physio-q__cta { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  @media (max-width: 900px) {
+    .steps, .consult__foot, .physio-q { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+  }
+</style>

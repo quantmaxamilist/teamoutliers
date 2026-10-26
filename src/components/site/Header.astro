@@ -1,0 +1,87 @@
+---
+import { nav, brand } from '../../data/site';
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const active = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="hdr" data-header>
+  <div class="hdr__in">
+    <a href="/" class="hdr__logo" aria-label="Outliers home">
+      <img src="/img/outliers-logo-white.png" alt="Outliers" width="1692" height="276" />
+    </a>
+    <nav class="hdr__nav" aria-label="Main">
+      {nav.map((n, i) => (
+        <a href={n.href} class:list={['hdr__link', { 'is-active': active(n.href), 'is-strand': i < 3 }]}>{n.label}</a>
+      ))}
+    </nav>
+    <div class="hdr__cta">
+      <a href={`tel:${brand.phone.tel}`} class="hdr__phone"><span class="label">Call</span> {brand.phone.display}</a>
+      <a href="/contact" class="btn btn--coral hdr__btn">Get in touch</a>
+      <button class="hdr__burger" aria-label="Open menu" aria-expanded="false" data-menu-open><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" data-menu hidden>
+  <div class="menu__in wrap">
+    <nav aria-label="Mobile">
+      <ul>
+        <li><a href="/">Home</a></li>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="menu__foot">
+      <a href={`tel:${brand.phone.tel}`} class="btn btn--coral">Call {brand.phone.display}</a>
+      <a href={`mailto:${brand.email}`} class="label">{brand.email}</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hdr {
+    position: fixed; inset: 0 0 auto; z-index: var(--z-header);
+    height: var(--header-h);
+    background: rgba(1, 1, 1, 0.86);
+    border-bottom: 1px solid var(--c-line);
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .hdr.is-hidden { transform: translateY(-100%); }
+  .hdr__in { height: 100%; display: flex; align-items: center; gap: var(--sp-4); padding-inline: var(--gutter); max-width: 1680px; margin-inline: auto; }
+  .hdr__logo img { width: clamp(118px, 10vw, 150px); height: auto; }
+  .hdr__nav { display: flex; gap: clamp(0.9rem, 1.6vw, 1.8rem); margin-left: auto; align-items: center; height: 44px; }
+  .hdr__link {
+    position: relative; font-size: 0.875rem; font-weight: 500; color: var(--c-mute);
+    transition: color var(--dur-fast); padding-block: 0.6rem;
+  }
+  .hdr__link.is-strand { color: var(--c-white); font-weight: 600; }
+  .hdr__link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0.2rem; height: 2px; background: var(--c-coral); transform: scaleX(0); transform-origin: left; transition: transform var(--dur) var(--ease-out); }
+  .hdr__link:hover, .hdr__link.is-active { color: var(--c-white); }
+  .hdr__link:hover::after, .hdr__link.is-active::after { transform: scaleX(1); }
+  .hdr__link:nth-child(3) { margin-right: clamp(0.4rem, 1vw, 1rem); }
+  .hdr__link:nth-child(3)::before { content: ''; position: absolute; right: calc(-1 * clamp(0.85rem, 1.6vw, 1.7rem)); top: 50%; width: 1px; height: 18px; background: var(--c-line); transform: translateY(-50%) skewX(-14deg); }
+  .hdr__cta { display: flex; align-items: center; gap: var(--sp-3); height: 44px; }
+  .hdr__phone { font-weight: 600; font-size: 0.9rem; white-space: nowrap; display: flex; gap: 0.5em; align-items: baseline; }
+  .hdr__phone .label { color: var(--c-coral); }
+  .hdr__btn { min-height: 44px; }
+  .hdr__burger { display: none; width: 44px; height: 44px; position: relative; }
+  .hdr__burger span { position: absolute; left: 10px; right: 10px; height: 2px; background: var(--c-white); transition: transform var(--dur) var(--ease-out); }
+  .hdr__burger span:first-child { top: 17px; }
+  .hdr__burger span:last-child { top: 25px; left: 16px; }
+  .hdr__burger[aria-expanded='true'] span:first-child { transform: translateY(4px) rotate(45deg); }
+  .hdr__burger[aria-expanded='true'] span:last-child { transform: translateY(-4px) rotate(-45deg); left: 10px; }
+
+  @media (max-width: 1180px) { .hdr__phone { display: none; } }
+  @media (max-width: 980px) {
+    .hdr__nav { display: none; }
+    .hdr__cta { margin-left: auto; gap: var(--sp-1); }
+    .hdr__burger { display: block; }
+  }
+  @media (max-width: 420px) { .hdr__btn { display: none; } }
+
+  .menu { position: fixed; inset: 0; z-index: var(--z-menu); background: var(--c-black); padding-top: calc(var(--header-h) + var(--sp-4)); overflow-y: auto; }
+  .menu[hidden] { display: none; }
+  .menu__in { display: flex; flex-direction: column; min-height: 100%; gap: var(--sp-5); padding-bottom: var(--sp-5); }
+  .menu li a { display: block; font-family: var(--f-display); font-style: italic; font-weight: 900; font-variation-settings: 'wdth' 118; text-transform: uppercase; font-size: clamp(1.75rem, 8vw, 2.75rem); line-height: 1.15; padding-block: 0.15em; }
+  .menu li a:hover { color: var(--c-coral); }
+  .menu__foot { margin-top: auto; display: flex; flex-direction: column; gap: var(--sp-2); align-items: flex-start; }
+</style>

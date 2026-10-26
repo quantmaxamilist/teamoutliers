@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/page/PageHero.astro';
+import Img from '../components/site/Img.astro';
+import EnquiryBand from '../components/site/EnquiryBand.astro';
+import Marquee from '../components/site/Marquee.astro';
+import { titles, method } from '../data/site';
+const imgs = ['band-row', 'gym-jump', 'race'];
+---
+<Base title={titles.method} description={method.text[0]}>
+  <PageHero kicker={method.kicker} title={method.title} lead={method.text[0]} img="band-row" pos="50% 40%" />
+
+  <Marquee items={method.principles.map((p) => p.t)} tone="coral" />
+
+  <section class="light section">
+    <div class="wrap sec-head">
+      <p class="statement" data-reveal>{method.text[1]}</p>
+      <p class="lead mute" data-reveal>{method.text[2]}</p>
+    </div>
+  </section>
+
+  {method.principles.map((p, i) => (
+    <section class:list={['section', i % 2 ? 'light' : 'dark']}>
+      <div class:list={['wrap split', { 'split--rev': i % 2 }]}>
+        <figure class:list={['photo split__photo', i % 2 ? 'cut-l' : 'cut-r']} data-reveal><Img name={imgs[i]} alt={["Coached movement control work", "Building strength at the Outliers unit", "An Outliers athlete racing"][i]} /></figure>
+        <div class="stack">
+          <span class="pn" data-reveal>{p.n}</span>
+          <h2 class="h-2" data-reveal>{p.t}</h2>
+          <p class="label kicker" data-reveal>{p.s}</p>
+          <div class:list={['prose', { mute: !(i % 2) }]} data-reveal>{p.p.map((t) => <p>{t}</p>)}</div>
+          <aside class="know" data-reveal>
+            <p class="label">{method.knowTitle}</p>
+            <p>{p.know}</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <EnquiryBand />
+</Base>
+<style>
+  .pn { font-family: var(--f-display); font-style: italic; font-weight: 900; font-variation-settings: 'wdth' 125; font-size: var(--fs-display-1); line-height: 0.8; color: var(--c-coral); }
+  .know { border-left: 4px solid var(--c-coral); padding: var(--sp-2) var(--sp-3); background: rgba(255, 97, 87, 0.08); max-width: 60ch; }
+  .know .label { color: var(--c-coral); margin-bottom: 0.4rem; }
+  .light .know .label { color: var(--c-coral-deep); }
+</style>

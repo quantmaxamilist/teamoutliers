@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactBlock from '../components/contact/ContactBlock.astro';
+import { titles, contact } from '../data/site';
+---
+<Base title={titles.contact} description={contact.lead}>
+  <div class="contact-top"></div>
+  <ContactBlock h1 title="Contact us" lead={contact.lead} />
+</Base>
+<style>
+  .contact-top { height: var(--header-h); background: var(--c-black); }
+</style>

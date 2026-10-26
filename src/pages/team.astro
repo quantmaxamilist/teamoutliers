@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/page/PageHero.astro';
+import Img from '../components/site/Img.astro';
+import EnquiryBand from '../components/site/EnquiryBand.astro';
+import { titles, team } from '../data/site';
+---
+<Base title={titles.team} description={team.people[0].p[0]}>
+  <PageHero kicker="Outliers Team" title={team.title} lead={team.lead} img="gym-trio" pos="50% 30%" />
+
+  <section class="light section">
+    <div class="wrap sec-head">
+      <p class="statement" data-reveal>{team.lead}</p>
+      <p class="lead mute" data-reveal>{team.text}</p>
+    </div>
+    <div class="wrap people">
+      {team.people.map((p, i) => (
+        <article class:list={['person', { 'person--lead': i === 0 }]} data-reveal>
+          <figure class="photo person__photo"><Img name={p.img} alt={`${p.name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}`} sizes="(max-width: 760px) 100vw, 40vw" pos={i === 0 ? '30% 30%' : '50% 20%'} /></figure>
+          <div class="person__body">
+            <h2 class="h-3">{p.name}</h2>
+            {p.role && <p class="label kicker">{p.role}</p>}
+            <div class="prose">{p.p.map((t) => <p>{t}</p>)}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="wrap" style="margin-top:var(--sp-6)"><a href="/method" class="btn btn--black" data-reveal>{team.methodCta}</a></div>
+  </section>
+
+  <EnquiryBand />
+</Base>
+<style>
+  .people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-5); }
+  .person { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .person__photo { aspect-ratio: 4 / 4.4; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%); }
+  .person--lead { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--sp-5); align-items: center; }
+  .person--lead .person__photo { aspect-ratio: 16 / 10; }
+  .person__body { display: flex; flex-direction: column; gap: var(--sp-2); }
+  @media (max-width: 900px) {
+    .people, .person--lead { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+    .person--lead { gap: var(--sp-3); }
+  }
+</style>

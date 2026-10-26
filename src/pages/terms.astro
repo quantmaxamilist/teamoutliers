@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Legal from '../components/page/Legal.astro';
+import { terms } from '../data/legal';
+import { titles } from '../data/site';
+---
+<Base title={titles.terms} description={terms.find((l) => l.t.length > 80)?.t}>
+  <section class="light section legal-page">
+    <div class="wrap">
+      <p class="label kicker">{terms[0].t}</p>
+      <h1 class="h-2">Terms and Conditions</h1>
+      <Legal lines={terms.slice(2)} />
+    </div>
+  </section>
+</Base>
+<style>
+  .legal-page { padding-top: calc(var(--header-h) + var(--sp-6)); }
+  .legal-page h1 { margin: var(--sp-2) 0 var(--sp-4); }
+</style>

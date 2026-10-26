@@ -1,0 +1,27 @@
+---
+// Scroll-velocity marquee: speeds up and leans with the scroll (driven by core.js).
+interface Props { items: string[]; tone?: 'dark' | 'coral'; dir?: 1 | -1 }
+const { items, tone = 'dark', dir = -1 } = Astro.props;
+const run = [...items, ...items, ...items];
+---
+<div class:list={['mq', `mq--${tone}`]} data-marquee={dir} aria-hidden="true">
+  <div class="mq__track" data-marquee-track>
+    {[0, 1].map(() => (
+      <span class="mq__set">
+        {run.map((t, i) => <span class:list={['mq__item', { 'is-outline': i % 2 }]}>{t}<span class="mq__slash"></span></span>)}
+      </span>
+    ))}
+  </div>
+</div>
+<style>
+  .mq { overflow: hidden; padding-block: clamp(1rem, 2.5vw, 2rem); border-block: 1px solid var(--c-line); }
+  .mq--dark { background: var(--c-black); color: var(--c-white); }
+  .mq--coral { background: var(--c-coral); color: var(--c-black); border: 0; }
+  .mq__track { display: flex; width: max-content; will-change: transform; }
+  .mq__set { display: flex; }
+  .mq__item { display: inline-flex; align-items: center; font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 125; font-size: var(--fs-display-1); line-height: 1; white-space: nowrap; }
+  .mq__item.is-outline { color: transparent; -webkit-text-stroke: 2px var(--c-black); }
+  .mq--dark .mq__item.is-outline { -webkit-text-stroke-color: var(--c-white); }
+  .mq__slash { display: inline-block; width: 0.18em; height: 0.8em; margin-inline: 0.45em; background: var(--c-coral); transform: skewX(-14deg); }
+  .mq--coral .mq__slash { background: var(--c-black); }
+</style>

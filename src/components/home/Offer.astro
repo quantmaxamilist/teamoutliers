@@ -1,0 +1,78 @@
+---
+// Everything Outliers does, as one list: rows stay fixed, a sticky photo crossfades to the
+// row in the middle of the screen (IntersectionObserver band), hover also drives it.
+import Img from '../site/Img.astro';
+import { offer } from '../../data/extra';
+---
+<section class="of dark section" aria-labelledby="of-h">
+  <div class="wrap of__head">
+    <p class="label kicker">Three strands · One method</p>
+    <h2 id="of-h" class="h-2">Everything we do</h2>
+  </div>
+  <div class="wrap of__grid">
+    <ol class="of__list">
+      {offer.map((o, i) => (
+        <li class:list={['of__row', { 'is-on': i === 0 }]} data-of-row={i}>
+          <a href={o.href}>
+            <span class="label of__strand">{String(i + 1).padStart(2, '0')} · {o.strand}</span>
+            <span class="of__name">{o.name}</span>
+            <span class="of__text">{o.text}</span>
+            <span class="label of__meta">{o.meta}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <div class="of__media" aria-hidden="true">
+      <div class="of__sticky">
+        {offer.map((o, i) => (
+          <div class:list={['of__img', { 'is-on': i === 0 }]} data-of-img={i}><Img name={o.img} alt="" sizes="(max-width: 900px) 0px, 45vw" /></div>
+        ))}
+        <span class="of__count label"><span data-of-n>01</span> / {String(offer.length).padStart(2, '0')}</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .of__head { margin-bottom: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-2); }
+  .of__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: var(--sp-6); }
+  .of__row { border-top: 1px solid var(--c-line); }
+  .of__row:last-child { border-bottom: 1px solid var(--c-line); }
+  .of__row a { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-3); row-gap: 0.4rem; padding: clamp(1.25rem, 2.6vw, 2rem) 0; position: relative; }
+  .of__row a::before { content: ''; position: absolute; left: -1rem; top: 50%; width: 6px; height: 46%; background: var(--c-coral); transform: translateY(-50%) skewX(-14deg) scaleY(0); transition: transform var(--dur) var(--ease-out); }
+  .of__strand { color: var(--c-coral); grid-column: 1 / -1; }
+  .of__name { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 118; font-size: var(--fs-display-3); line-height: 1; color: rgba(255,255,255,0.4); transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+  .of__text { grid-column: 1 / -1; color: var(--c-mute); max-width: 56ch; display: none; }
+  .of__meta { align-self: center; color: var(--c-mute); text-align: right; max-width: 22ch; }
+  .of__row.is-on .of__name { color: var(--c-white); transform: translateX(0.5rem); }
+  .of__row.is-on a::before { transform: translateY(-50%) skewX(-14deg) scaleY(1); }
+  .of__row.is-on .of__meta { color: var(--c-coral); }
+  .of__media { position: relative; }
+  .of__sticky { position: sticky; top: calc(50vh - min(68vh, 620px) / 2 + var(--header-h) / 2); height: min(68vh, 620px); width: 100%; overflow: hidden; clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%); }
+  .of__img { position: absolute; inset: 0; opacity: 0; transform: scale(1.08); transition: opacity 0.7s var(--ease-out), transform 1.2s var(--ease-out); }
+  .of__img.is-on { opacity: 1; transform: none; }
+  .of__img :global(img) { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(0.86); }
+  .of__count { position: absolute; right: 1rem; bottom: 1rem; background: var(--c-black); padding: 0.4rem 0.6rem; }
+  @media (max-width: 900px) {
+    .of__grid { grid-template-columns: minmax(0, 1fr); }
+    .of__media { display: none; }
+    .of__text { display: block; }
+    .of__name { color: var(--c-white); }
+    .of__row a::before { display: none; }
+    .of__row.is-on .of__name { transform: none; }
+    .of__meta { grid-column: 1 / -1; text-align: left; max-width: none; }
+  }
+</style>
+<script>
+  const rows = [...document.querySelectorAll<HTMLElement>('[data-of-row]')];
+  const imgs = [...document.querySelectorAll<HTMLElement>('[data-of-img]')];
+  const n = document.querySelector('[data-of-n]');
+  if (rows.length) {
+    const set = (i: number) => {
+      rows.forEach((r, k) => r.classList.toggle('is-on', k === i));
+      imgs.forEach((r, k) => r.classList.toggle('is-on', k === i));
+      if (n) n.textContent = String(i + 1).padStart(2, '0');
+    };
+    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && set(Number((e.target as HTMLElement).dataset.ofRow))), { rootMargin: '-48% 0px -48% 0px' });
+    rows.forEach((r, i) => { io.observe(r); r.addEventListener('pointerenter', () => set(i)); });
+  }
+</script>

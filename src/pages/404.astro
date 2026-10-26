@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import { strands } from '../data/site';
+---
+<Base title="Page not found - Outliers">
+  <section class="nf dark">
+    <div class="wrap">
+      <p class="label kicker">404</p>
+      <h1 class="h-1">Page not found</h1>
+      <p class="lead mute">That page has moved. Pick one of our three strands:</p>
+      <ul class="nf__list">{strands.map((s) => <li><a class="btn btn--white" href={s.href}>{s.name}</a></li>)}<li><a class="btn btn--coral" href="/contact">Contact</a></li></ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 80svh; display: flex; align-items: center; padding-top: var(--header-h); }
+  .nf .wrap { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .nf__list { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+</style>

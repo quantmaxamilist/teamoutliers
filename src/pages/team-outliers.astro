@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import MotionHero from '../components/page/MotionHero.astro';
+import AthleteMotion from '../components/strand/AthleteMotion.astro';
+import StrandBar from '../components/page/StrandBar.astro';
+import Img from '../components/site/Img.astro';
+import EnquiryBand from '../components/site/EnquiryBand.astro';
+import { titles, strands, services, home } from '../data/site';
+const s = strands[0];
+---
+<Base title={titles.teamOutliers} description={services.programmes[0].text}>
+  <MotionHero kicker="01 — Team Outliers" title={s.name} lead={s.blurb} img="band-row" pos="40% 40%"
+    cta={[{ label: 'See Our Programmes', href: '/team-outliers/online-programmes' }, { label: 'Book a Call', href: '/contact?package=bespoke-coaching' }]}>
+    <AthleteMotion />
+  </MotionHero>
+  <StrandBar current="team-outliers" />
+
+  <section class="light section">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="stack">
+          <p class="label kicker" data-reveal>{services.onlineFrom}</p>
+          <h2 class="h-2" data-reveal>{services.onlineTitle}</h2>
+        </div>
+        <p class="lead" data-reveal>{home.bespoke}</p>
+      </div>
+      <div class="cards">
+        {services.programmes.map((p, i) => (
+          <article class="card" data-reveal>
+            <h3>{p.name}</h3>
+            <p>{p.text}</p>
+            {p.bullets.length > 0 && <ul class="ticks">{p.bullets.map((b) => <li>{b.replace(/^►\s*/, '')}</li>)}</ul>}
+            <a href={['/team-outliers/online-programmes#performance', '/team-outliers/online-programmes#bespoke', '/team-outliers/online-programmes#resilience'][i]} class="btn btn--black">View programme</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="dark section">
+    <div class="wrap split">
+      <figure class="photo split__photo cut-r" data-reveal><Img name="physio-ball" alt="Physiotherapy-led rehab at the Outliers unit" /></figure>
+      <div class="stack">
+        <p class="label kicker" data-reveal>{services.physioFrom}</p>
+        <h2 class="h-2" data-reveal>{services.physioTitle}</h2>
+        <p class="lead mute" data-reveal>{services.physioLead}</p>
+        {services.physioItems.map((it) => (
+          <div data-reveal><h3 class="h-3" style="font-size:1.35rem">{it.name}</h3><p class="mute">{it.text}</p></div>
+        ))}
+        <a href="/team-outliers/physiotherapy" class="btn btn--coral" data-reveal>{services.physioCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="white section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="h-2" data-reveal>{services.classesTitle}</h2>
+        <p class="lead" data-reveal>{services.classesLead}</p>
+      </div>
+      <div class="cards">
+        {services.classes.map((c) => (
+          <article class="card" data-reveal>
+            {c.when && <p class="label kicker">{c.when}</p>}
+            <h3>{c.name}</h3>
+            {c.text.map((t) => <p>{t}</p>)}
+          </article>
+        ))}
+      </div>
+      <p style="margin-top:var(--sp-4)" data-reveal><a href="/team-outliers/classes" class="btn btn--black">{services.classesCta}</a></p>
+    </div>
+  </section>
+
+  <section class="dark section">
+    <div class="wrap split split--rev">
+      <figure class="photo split__photo cut-l" data-reveal><Img name="gym-coaching" alt="A coached strength and conditioning session" /></figure>
+      <div class="stack">
+        <p class="label kicker" data-reveal>Underpins everything we do</p>
+        <h2 class="h-2" data-reveal>The Outliers Method</h2>
+        <p class="lead mute" data-reveal>The Outliers Method underpins everything we do. From 1:1 coaching and team programmes to physiotherapy, bespoke programming, and online training.</p>
+        <a href="/method" class="btn btn--coral" data-reveal>LEARN ABOUT OUR MOVEMENT METHODOLOGY</a>
+      </div>
+    </div>
+  </section>
+
+  <EnquiryBand title={services.contactTitle} />
+</Base>

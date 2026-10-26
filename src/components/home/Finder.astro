@@ -1,0 +1,91 @@
+---
+// "Not sure where to start?" — pick who you are, see the matching Outliers services.
+// Service names, blurbs and links all come from site.ts; only the chip labels are UI microcopy.
+import { home, services, online, physio, classesPage, northern, consulting } from '../../data/site';
+const svc = {
+  performance: { name: online.performance.title, text: services.programmes[0].text, href: '/team-outliers/online-programmes#performance', meta: online.performance.fee },
+  bespoke: { name: online.bespoke.title, text: online.bespoke.sub, href: '/team-outliers/online-programmes#bespoke', meta: 'Book a Call' },
+  resilience: { name: online.resilience.title, text: online.resilience.text[0], href: '/team-outliers/online-programmes#resilience', meta: online.resilience.fee },
+  physio: { name: physio.consult.title, text: physio.consult.sub, href: '/team-outliers/physiotherapy', meta: physio.consult.price },
+  rehab: { name: physio.rehab.title, text: physio.rehab.sub, href: '/team-outliers/physiotherapy', meta: 'Start Now' },
+  intro: { name: classesPage.intro.title, text: classesPage.intro.text[0], href: '/team-outliers/classes', meta: classesPage.intro.price },
+  sc: { name: classesPage.sc.title, text: classesPage.sc.text[0], href: '/team-outliers/classes', meta: classesPage.sc.when },
+  northern: { name: 'Northern Outliers', text: northern.intro, href: '/northern-outliers', meta: 'Sign Up' },
+  schools: { name: consulting.blocks[1].t, text: consulting.blocks[1].p[0], href: '/consulting', meta: consulting.workTitle },
+  workshops: { name: consulting.blocks[2].t, text: consulting.blocks[2].p[0], href: '/consulting', meta: consulting.touchTitle },
+};
+const who = [
+  { id: 'athlete', label: 'I want to perform in my sport', picks: ['performance', 'bespoke', 'physio'] },
+  { id: 'rugby', label: 'I play rugby (U13–18)', picks: ['northern', 'performance', 'bespoke'] },
+  { id: 'parent', label: 'I’m a parent', picks: ['northern', 'performance', 'workshops'] },
+  { id: 'injured', label: 'I’m injured or in pain', picks: ['physio', 'rehab', 'resilience'] },
+  { id: 'new', label: 'I’m new to strength training', picks: ['intro', 'resilience', 'sc'] },
+  { id: 'school', label: 'I’m a school or club', picks: ['schools', 'workshops', 'northern'] },
+] as const;
+---
+<section class="fd light section" aria-labelledby="fd-h">
+  <div class="wrap">
+    <div class="fd__head">
+      <h2 id="fd-h" class="h-2">{home.talk.split('?')[0]}?</h2>
+      <p class="lead mute">Pick what fits you best and we’ll point you to the right Outliers service.</p>
+    </div>
+    <div class="fd__chips" role="tablist" aria-label="Who are you?">
+      {who.map((w, i) => (
+        <button role="tab" class:list={['fd__chip', { 'is-on': i === 0 }]} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`fd-${w.id}`} id={`fd-tab-${w.id}`} data-fd-tab={w.id}>{w.label}</button>
+      ))}
+    </div>
+    {who.map((w, i) => (
+      <div class="fd__panel" role="tabpanel" id={`fd-${w.id}`} aria-labelledby={`fd-tab-${w.id}`} data-fd-panel={w.id} hidden={i !== 0}>
+        {w.picks.map((k, j) => {
+          const s = svc[k];
+          return (
+            <a href={s.href} class="fd__card">
+              <span class="label fd__n">{j === 0 ? 'Best match' : `Also for you`}</span>
+              <span class="fd__name">{s.name}</span>
+              <span class="fd__text">{s.text}</span>
+              <span class="label fd__meta">{s.meta} →</span>
+            </a>
+          );
+        })}
+      </div>
+    ))}
+  </div>
+</section>
+<style>
+  .fd__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-5); align-items: end; margin-bottom: var(--sp-4); }
+  .fd__chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: var(--sp-4); }
+  .fd__chip { padding: 0.8rem 1.1rem; border: 1.5px solid rgba(1,1,1,0.2); font-weight: 600; background: var(--c-white); transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); padding-inline: 1.3rem; }
+  .fd__chip:hover { border-color: var(--c-black); }
+  .fd__chip.is-on { background: var(--c-black); color: var(--c-white); border-color: var(--c-black); }
+  .fd__panel { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: var(--sp-3); }
+  .fd__panel[hidden] { display: none; }
+  .fd__card { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4); background: var(--c-white); border-top: 4px solid var(--c-black); transition: transform var(--dur) var(--ease-out), box-shadow var(--dur); }
+  .fd__card:first-child { background: var(--c-black); color: var(--c-white); border-top-color: var(--c-coral); }
+  .fd__card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px -20px rgba(1,1,1,0.4); }
+  .fd__n { color: var(--c-coral-deep); }
+  .fd__card:first-child .fd__n { color: var(--c-coral); }
+  .fd__name { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-size: 1.45rem; line-height: 1.05; }
+  .fd__text { color: var(--c-mute-dark); font-size: 0.95rem; }
+  .fd__card:first-child .fd__text { color: var(--c-mute); }
+  .fd__meta { margin-top: auto; font-weight: 500; }
+  @media (max-width: 900px) {
+    .fd__head { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
+    .fd__panel { grid-template-columns: minmax(0, 1fr); }
+    .fd__chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+    .fd__chip { flex: none; }
+  }
+</style>
+<script>
+  import { gsap } from 'gsap';
+  const tabs = [...document.querySelectorAll<HTMLElement>('[data-fd-tab]')];
+  const panels = [...document.querySelectorAll<HTMLElement>('[data-fd-panel]')];
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    const id = t.dataset.fdTab;
+    tabs.forEach((x) => { const on = x === t; x.classList.toggle('is-on', on); x.setAttribute('aria-selected', String(on)); });
+    panels.forEach((p) => {
+      const on = p.dataset.fdPanel === id;
+      p.hidden = !on;
+      if (on && !matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.fromTo(p.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out', stagger: 0.06 });
+    });
+  }));
+</script>

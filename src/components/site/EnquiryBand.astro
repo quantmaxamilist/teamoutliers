@@ -1,0 +1,28 @@
+---
+import { home, brand } from '../../data/site';
+interface Props { title?: string; text?: string; package?: string }
+const { title = home.talkTitle, text = home.talk, package: pkg } = Astro.props;
+---
+<section class="enq coral">
+  <div class="enq__slash" aria-hidden="true"></div>
+  <div class="wrap enq__in">
+    <h2 class="h-2" data-reveal>{title}</h2>
+    <div class="enq__body" data-reveal>
+      <p class="lead">{text}</p>
+      <div class="enq__actions">
+        <a href={pkg ? `/contact?package=${pkg}` : '/contact'} class="btn btn--black">Contact Us</a>
+        <a href={`tel:${brand.phone.tel}`} class="enq__phone"><span class="label">Call Chris</span><strong>{brand.phone.display}</strong></a>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .enq { position: relative; overflow: hidden; padding-block: var(--sp-7); }
+  .enq__slash { position: absolute; top: -10%; bottom: -10%; right: 8%; width: 32%; background: var(--c-coral-deep); transform: skewX(calc(-1 * var(--slash))); opacity: 0.7; }
+  .enq__in { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); align-items: end; }
+  .enq__body .lead { max-width: 46ch; font-weight: 500; }
+  .enq__actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; margin-top: var(--sp-4); }
+  .enq__phone { display: flex; flex-direction: column; line-height: 1.2; }
+  .enq__phone strong { font-family: var(--f-display); font-style: italic; font-weight: 900; font-size: var(--fs-display-3); font-variation-settings: 'wdth' 112; }
+  @media (max-width: 760px) { .enq__in { grid-template-columns: minmax(0, 1fr); } .enq__slash { width: 50%; right: -10%; } }
+</style>

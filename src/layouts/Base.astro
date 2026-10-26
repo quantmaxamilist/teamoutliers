@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+import Header from '../components/site/Header.astro';
+import Footer from '../components/site/Footer.astro';
+import { brand } from '../data/site';
+interface Props { title: string; description?: string; image?: string }
+const { title, description = '', image = 'gym-coaching' } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/', brand.site).href;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+    <meta name="theme-color" content="#010101" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:image" content={new URL(`/img/${image}.webp`, brand.site).href} />
+    <meta property="og:url" content={canonical} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a href="#main" class="sr-only">Skip to content</a>
+    <div class="prog" aria-hidden="true"><span></span></div>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <div class="pt" aria-hidden="true"></div>
+    <div class="cur" aria-hidden="true"><span class="cur__ring"></span><span class="cur__dot"></span></div>
+    <script>
+      import '../scripts/core.js';
+    </script>
+    <style is:global>
+      .pt { position: fixed; top: 0; bottom: 0; left: -40vh; right: -40vh; z-index: var(--z-transition); background: var(--c-coral); pointer-events: none; visibility: hidden; }
+      .cur { position: fixed; left: 0; top: 0; z-index: var(--z-cursor); pointer-events: none; display: none; }
+      .has-cursor .cur { display: block; }
+      .cur__ring, .cur__dot { position: absolute; border-radius: 50%; transform: translate(-50%, -50%); }
+      .cur__ring { width: 24px; height: 24px; border: 1.5px solid var(--c-coral); transition: width var(--dur-fast), height var(--dur-fast), background var(--dur-fast); }
+      .cur__dot { width: 6px; height: 6px; background: var(--c-coral); }
+      .cur.is-link .cur__ring { width: 40px; height: 40px; background: rgba(255, 97, 87, 0.12); }
+    </style>
+  </body>
+</html>

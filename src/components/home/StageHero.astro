@@ -1,0 +1,100 @@
+---
+// Signature moment. The Outliers "O" opens as a window onto the first strand, flies past the
+// camera into a full-screen WebGL stage, then the three strands swap with a coral slash wipe.
+// Plays by itself (~2.4s); headline and list arrive only at the end. Poster images = fallback.
+import Img from '../site/Img.astro';
+import { home, strands, brand } from '../../data/site';
+// Stage photos (stronger than the strand-card photos). fx = horizontal focus, kept in frame on phones.
+const stage = [{ img: 'kettlebell', fx: 0.47 }, { img: 'rugby-sprint', fx: 0.42 }, { img: 'coach-ball', fx: 0.34 }];
+---
+<section class="st" data-stage data-state="pre" aria-labelledby="st-h1">
+  <div class="st__poster" aria-hidden="true">
+    {strands.map((s, i) => (
+      <div class:list={['st__pimg', { 'is-on': i === 0 }]} data-stage-poster={i} data-fx={stage[i].fx}>
+        <Img name={stage[i].img} eager={i === 0} sizes="100vw" alt="" pos={`${stage[i].fx * 100}% 50%`} />
+      </div>
+    ))}
+  </div>
+  <canvas class="st__gl" data-stage-gl aria-hidden="true"></canvas>
+  <div class="st__veil" aria-hidden="true"></div>
+
+  <div class="st__top wrap" data-stage-late>
+    <p class="label st__kicker">{home.kicker}</p>
+    <h1 id="st-h1" class="h-hero st__h1">{home.h1}</h1>
+    <div class="st__cta">
+      <a href="/contact" class="btn btn--coral" data-magnetic>Get in touch</a>
+      <a href={`tel:${brand.phone.tel}`} class="st__phone"><span class="label">Call</span> {brand.phone.display}</a>
+    </div>
+  </div>
+
+  <ol class="st__list wrap" data-stage-late>
+    {strands.map((s, i) => (
+      <li class:list={['st__row', { 'is-on': i === 0 }]} data-stage-row={i}>
+        <a href={s.href}>
+          <span class="label st__n">0{i + 1}</span>
+          <span class="st__name">{s.name}</span>
+          <span class="label st__tag">{s.tag}</span>
+          <span class="st__arrow" aria-hidden="true">→</span>
+          <span class="st__bar" aria-hidden="true"><span></span></span>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <button class="st__replay label" data-stage-replay hidden>↻ Replay</button>
+</section>
+<script is:inline>setTimeout(function(){var s=document.querySelector('[data-stage]');if(s&&s.dataset.state==='pre')s.dataset.state='done';},4500);</script>
+
+<style>
+  .st { position: relative; height: 100svh; min-height: 640px; max-height: 1200px; background: var(--c-black); overflow: hidden; isolation: isolate; color: var(--c-white); }
+  .st__poster, .st__gl, .st__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .st__pimg { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s var(--ease-out); }
+  .st__pimg.is-on { opacity: 1; }
+  .st__pimg :global(img) { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.06) saturate(0.86); }
+  .st__gl { opacity: 0; transition: opacity 0.3s; }
+  .st.has-gl .st__gl { opacity: 1; }
+  .st.has-gl .st__poster { visibility: hidden; }
+  .st__veil { pointer-events: none; background:
+      linear-gradient(180deg, rgba(1,1,1,0.72) 0%, rgba(1,1,1,0) 34%, rgba(1,1,1,0) 48%, rgba(1,1,1,0.88) 100%),
+      linear-gradient(90deg, rgba(1,1,1,0.5) 0%, rgba(1,1,1,0) 55%); }
+
+  .st__top { position: absolute; left: 0; right: 0; top: calc(var(--header-h) + clamp(1.5rem, 6vh, 4rem)); z-index: 2; }
+  .st__kicker { color: var(--c-coral); margin-bottom: var(--sp-2); }
+  .st__h1 { max-width: 12ch; }
+  .st__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
+  .st__phone { font-weight: 600; display: flex; gap: 0.5em; align-items: baseline; }
+  .st__phone .label { color: var(--c-coral); }
+
+  .st__list { position: absolute; left: 0; right: 0; bottom: clamp(1.25rem, 4vh, 2.75rem); z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+  .st__row a { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 0.75rem; row-gap: 0.35rem; align-items: baseline; padding-bottom: 1rem; }
+  .st__n { color: var(--c-coral); }
+  .st__name { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 118; font-size: clamp(1.25rem, 0.55rem + 1.55vw, 2.25rem); line-height: 1; transition: color var(--dur-fast); }
+  .st__tag { grid-column: 2 / 4; color: var(--c-mute); }
+  .st__arrow { font-size: 1.4rem; color: var(--c-coral); transform: translateX(-6px); opacity: 0; transition: transform var(--dur) var(--ease-out), opacity var(--dur); }
+  .st__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.18); overflow: hidden; }
+  .st__bar span { position: absolute; inset: 0; background: var(--c-coral); transform: scaleX(0); transform-origin: left; }
+  .st__row:not(.is-on) .st__name { color: rgba(255,255,255,0.62); }
+  .st__row.is-on .st__arrow, .st__row a:hover .st__arrow { opacity: 1; transform: none; }
+  .st__row a:hover .st__name { color: var(--c-white); }
+
+  .st__replay { position: absolute; right: var(--gutter); top: calc(var(--header-h) + 1rem); z-index: 3; padding: 0.55rem 0.85rem; border: 1px solid var(--c-line); background: rgba(1,1,1,0.4); }
+  .st__replay:hover { border-color: var(--c-coral); color: var(--c-coral); }
+
+  @media (max-width: 760px) {
+    .st__h1 { font-size: clamp(2rem, 10vw, 3.25rem); }
+    .st__list { grid-template-columns: minmax(0, 1fr); gap: 0.4rem; }
+    .st__row a { padding-bottom: 0.7rem; }
+    .st__name { font-size: clamp(1.25rem, 6.4vw, 1.75rem); }
+    .st__tag { font-size: 0.66rem; }
+    .st__replay { top: auto; bottom: auto; top: calc(var(--header-h) + 0.6rem); padding: 0.4rem 0.6rem; }
+  }
+
+  :global(.js) .st[data-state='pre'] [data-stage-late] { opacity: 0; }
+  :global(.js) .st[data-state='pre'] .st__poster { opacity: 0; }
+</style>
+
+<script>
+  import { initStage } from '../../scripts/stage.js';
+  const root = document.querySelector<HTMLElement>('[data-stage]');
+  if (root) initStage(root);
+</script>

@@ -1,0 +1,46 @@
+---
+// Team Outliers signature: one athlete moves through The Outliers Method, leaving a ghost at each principle.
+import { method } from '../../data/site';
+---
+<figure class="am" data-athlete data-state="pre">
+  <canvas class="am__cv" aria-hidden="true"></canvas>
+  <figcaption>
+    <span class="sr-only">An athlete moves through the three principles of The Outliers Method.</span>
+    <ol class="am__labels">
+      {method.principles.map((p) => (
+        <li class="am__label" data-am-label>
+          <span class="am__n">{p.n}</span>
+          <span class="am__t">{p.t}</span>
+          <span class="label am__s">{p.s}</span>
+        </li>
+      ))}
+    </ol>
+  </figcaption>
+  <button class="am__replay label" data-replay hidden>↻ Replay</button>
+</figure>
+<style>
+  .am { position: relative; margin: 0; }
+  .am__cv { display: block; width: 100%; aspect-ratio: 16 / 7.6; }
+  .am__labels { position: relative; height: 5.5rem; margin-top: 0.75rem; border-top: 1px solid var(--c-line); }
+  .am__label { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.2rem; padding-top: 0.8rem; width: 26%; transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out); }
+  .am__label::before { content: ''; position: absolute; top: -1px; left: 50%; width: 36px; height: 3px; margin-left: -18px; background: var(--c-coral); transform: skewX(-14deg); }
+  .am__n { font-family: var(--f-display); font-style: italic; font-weight: 900; color: var(--c-coral); font-size: 1.1rem; line-height: 1; }
+  .am__t { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 115; font-size: clamp(0.95rem, 0.6rem + 0.8vw, 1.35rem); line-height: 1; }
+  .am__s { color: var(--c-mute); font-size: 0.62rem; }
+  .am[data-state='pre'] .am__label, .am[data-state='run'] .am__label { opacity: 0; transform: translate(-50%, 8px); }
+  .am__replay { position: absolute; right: 0; top: 0; padding: 0.45rem 0.7rem; border: 1px solid var(--c-line); color: var(--c-white); }
+  .am__replay:hover { color: var(--c-coral); border-color: var(--c-coral); }
+  @media (max-width: 520px) { .am__s { display: none; } .am__labels { height: 4.6rem; } .am__t { font-size: 0.85rem; } .am__label { width: 30%; } }
+</style>
+<script>
+  import { createAthlete, T_END } from '../../scripts/athlete.js';
+  import { playOnView } from '../../scripts/playOnView.js';
+  const root = document.querySelector<HTMLElement>('[data-athlete]');
+  const cv = root?.querySelector('canvas');
+  if (root && cv) {
+    const a = createAthlete(cv);
+    const labels = [...root.querySelectorAll<HTMLElement>('[data-am-label]')];
+    const place = () => a.labelX().forEach((x, i) => labels[i] && (labels[i].style.left = `${x * 100}%`));
+    playOnView(root, { duration: T_END, draw: a.draw, resize: () => { a.resize(); place(); }, onEnd: place });
+  }
+</script>

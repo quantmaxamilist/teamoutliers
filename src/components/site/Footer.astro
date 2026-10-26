@@ -1,0 +1,47 @@
+---
+import { brand, nav, strands } from '../../data/site';
+const year = 2026;
+---
+<footer class="ftr">
+  <div class="wrap ftr__top">
+    <div class="ftr__brand">
+      <img src="/img/outliers-logo-white.png" alt="Outliers" width="1692" height="276" loading="lazy" />
+      <p class="label mute">Outliers, Move Brilliantly.</p>
+    </div>
+    <div class="ftr__col">
+      <p class="label ftr__h">Our three strands</p>
+      <ul>{strands.map((s) => <li><a class="ulink" href={s.href}>{s.name}</a></li>)}</ul>
+    </div>
+    <div class="ftr__col">
+      <p class="label ftr__h">Outliers</p>
+      <ul>
+        {nav.slice(3).map((n) => <li><a class="ulink" href={n.href}>{n.label}</a></li>)}
+        <li><a class="ulink" href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="ftr__col">
+      <p class="label ftr__h">Get in touch</p>
+      <ul>
+        <li><a class="ulink" href={`tel:${brand.phone.tel}`}>{brand.phone.label} – {brand.phone.display}</a></li>
+        <li><a class="ulink" href={`tel:${brand.physioPhone.tel}`}>Physio – {brand.physioPhone.display}</a></li>
+        <li><a class="ulink" href={`mailto:${brand.email}`}>{brand.email}</a></li>
+        <li class="mute">{brand.facility}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap ftr__bot">
+    <p class="mute">© {year} {brand.legalName}. Company no. {brand.companyNo}. Registered office {brand.registeredOffice}.</p>
+    <p><a class="ulink" href="/terms">Terms and Conditions</a> · <a class="ulink" href="/privacy">Privacy Policy</a></p>
+  </div>
+</footer>
+
+<style>
+  .ftr { background: var(--c-black); color: var(--c-white); padding-top: var(--sp-6); border-top: 4px solid var(--c-coral); }
+  .ftr__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.4fr; gap: var(--sp-5); padding-bottom: var(--sp-6); }
+  .ftr__brand img { width: 190px; height: auto; margin-bottom: var(--sp-2); }
+  .ftr__h { color: var(--c-coral); margin-bottom: var(--sp-2); }
+  .ftr__col li { padding-block: 0.25rem; font-size: 0.95rem; }
+  .ftr__bot { display: flex; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; border-top: 1px solid var(--c-line); padding-block: var(--sp-3); font-size: var(--fs-sm); }
+  @media (max-width: 900px) { .ftr__top { grid-template-columns: 1fr 1fr; } .ftr__brand { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { .ftr__top { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); } }
+</style>

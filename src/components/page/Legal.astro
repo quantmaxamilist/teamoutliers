@@ -1,0 +1,17 @@
+---
+import type { LegalLine } from '../../data/legal';
+interface Props { lines: LegalLine[] }
+const { lines } = Astro.props;
+// Short lines without a full stop read as headings on the old page
+const isHead = (l: LegalLine) => !l.li && l.t.length < 70 && !/[.:;,]$/.test(l.t) && !/^\d+\.\d/.test(l.t);
+---
+<div class="legal prose">
+  {lines.map((l) => (isHead(l) ? <h2>{l.t}</h2> : l.li ? <p class="legal__li">{l.t}</p> : <p>{l.t}</p>))}
+</div>
+<style>
+  .legal { max-width: 78ch; overflow-wrap: anywhere; }
+  .legal h2 { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-size: 1.25rem; margin: 2rem 0 0.6rem; }
+  .legal p { margin-top: 0.8em; }
+  .legal__li { padding-left: 1.2rem; position: relative; }
+  .legal__li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 8px; height: 3px; background: var(--c-coral); }
+</style>

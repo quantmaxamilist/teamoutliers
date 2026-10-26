@@ -1,0 +1,41 @@
+---
+import Img from '../site/Img.astro';
+interface Props { kicker: string; title: string; lead?: string; img: string; pos?: string; cta?: { label: string; href: string; ext?: boolean }[] }
+const { kicker, title, lead, img, pos, cta = [] } = Astro.props;
+---
+<section class="ph">
+  <div class="ph__photo photo" data-wipe>
+    <Img name={img} eager sizes="(max-width: 760px) 100vw, 60vw" pos={pos} />
+  </div>
+  <span class="ph__slash" aria-hidden="true"></span>
+  <div class="wrap ph__in">
+    <p class="label ph__kicker">{kicker}</p>
+    <h1 class="h-hero ph__title" data-split>{title}</h1>
+    {lead && <p class="lead ph__lead">{lead}</p>}
+    {cta.length > 0 && (
+      <div class="ph__cta">
+        {cta.map((c, i) => <a href={c.href} class:list={['btn', i ? 'btn--white' : 'btn--coral']} target={c.ext ? '_blank' : undefined} rel={c.ext ? 'noopener' : undefined}>{c.label}</a>)}
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .ph { position: relative; min-height: min(78svh, 760px); display: flex; align-items: flex-end; background: var(--c-black); overflow: hidden; padding-top: var(--header-h); }
+  .ph__photo { position: absolute; top: 0; bottom: 0; right: 0; width: 62%; clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%); }
+  .ph__photo::after { background: linear-gradient(90deg, rgba(1,1,1,0.55), rgba(1,1,1,0) 45%), linear-gradient(180deg, rgba(1,1,1,0) 60%, rgba(1,1,1,0.45)); }
+  .ph__slash { position: absolute; top: 0; bottom: 0; right: 0; width: 62%; background: var(--c-coral); clip-path: polygon(calc(22% - 14px) 0, calc(22% - 4px) 0, -4px 100%, -14px 100%); }
+  .ph__in { position: relative; padding-block: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-3); }
+  .ph__kicker { color: var(--c-coral); }
+  .ph__in > * { max-width: min(46ch, 42%); }
+  .ph__title { font-size: var(--fs-display-2); max-width: min(14ch, 44%); }
+  .ph__lead { max-width: 46ch; color: var(--c-mute); }
+  .ph__cta { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-1); }
+  @media (max-width: 760px) {
+    .ph { min-height: 0; display: block; padding-top: var(--header-h); }
+    .ph__photo { position: relative; width: 100%; height: 46vh; clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%); }
+    .ph__slash { display: none; }
+    .ph__in { padding-block: var(--sp-4) var(--sp-5); }
+    .ph__in > *, .ph__title { max-width: none; }
+    .ph__title { font-size: clamp(1.625rem, 8.2vw, 2.75rem); }
+  }
+</style>

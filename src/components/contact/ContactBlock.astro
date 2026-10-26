@@ -1,0 +1,79 @@
+---
+// Phone, email and address first, then the enquiry form. ?package=<slug> pre-ticks a box.
+import { brand, contact } from '../../data/site';
+interface Props { id?: string; title?: string; lead?: string; preselect?: string; h1?: boolean }
+const { id, title = 'Get in Touch', lead, preselect, h1 = false } = Astro.props;
+const Tag = h1 ? 'h1' : 'h2';
+---
+<section class="cb light section" id={id}>
+  <div class="wrap cb__grid">
+    <div class="cb__info">
+      <Tag class="h-2">{title}</Tag>
+      {lead && <p class="lead">{lead}</p>}
+      <dl class="cb__list">
+        <div><dt class="label">Numbers</dt><dd><a class="ulink" href={`tel:${brand.phone.tel}`}>{brand.phone.label} – {brand.phone.display}</a></dd></div>
+        <div><dt class="label">Physiotherapy</dt><dd><a class="ulink" href={`tel:${brand.physioPhone.tel}`}>{brand.physioPhone.label} – {brand.physioPhone.display}</a></dd></div>
+        <div><dt class="label">Email</dt><dd><a class="ulink" href={`mailto:${brand.email}`}>{brand.email}</a></dd></div>
+        <div><dt class="label">Training facility</dt><dd>{brand.facility}</dd></div>
+      </dl>
+    </div>
+    <form class="cb__form" action={`mailto:${brand.email}`} method="post" enctype="text/plain" data-contact-form data-preselect={preselect}>
+      <h3 class="h-3">{contact.formTitle}</h3>
+      <div class="cb__row">
+        <label><span class="label">Full name *</span><input name="name" autocomplete="name" required /></label>
+        <label><span class="label">Email address *</span><input name="email" type="email" autocomplete="email" required /></label>
+      </div>
+      <label><span class="label">Phone number</span><input name="phone" type="tel" autocomplete="tel" /></label>
+      <fieldset class="cb__ticks">
+        <legend class="label">What is your query regarding? *</legend>
+        {contact.options.map((o) => (
+          <label class="cb__tick"><input type="checkbox" name="query" value={o.label} data-slug={o.slug} /><span>{o.label}</span></label>
+        ))}
+      </fieldset>
+      <label><span class="label">Message</span><textarea name="message" rows="5" maxlength="180"></textarea></label>
+      <label class="cb__consent"><input type="checkbox" name="consent" required /><span>Yes, I agree with the <a class="ulink" href="/privacy">privacy policy</a> and <a class="ulink" href="/terms">terms and conditions</a>. *</span></label>
+      <button type="submit" class="btn btn--black">{contact.send}</button>
+    </form>
+  </div>
+</section>
+<style>
+  .cb__grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: var(--sp-6); align-items: start; }
+  .cb__info { display: flex; flex-direction: column; gap: var(--sp-3); position: sticky; top: calc(var(--header-h) + var(--sp-3)); }
+  .cb__list { margin: 0; border-top: 2px solid var(--c-black); }
+  .cb__list div { padding: 0.9rem 0; border-bottom: 1px solid var(--c-line-dark); }
+  .cb__list dt { color: var(--c-coral-deep); margin-bottom: 0.2rem; }
+  .cb__list dd { margin: 0; font-weight: 600; font-size: 1.05rem; }
+  .cb__form { background: var(--c-white); padding: clamp(1.25rem, 3vw, 2.5rem); display: flex; flex-direction: column; gap: var(--sp-3); border-top: 4px solid var(--c-coral); }
+  .cb__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+  .cb__form > label, .cb__row label { display: flex; flex-direction: column; gap: 0.4rem; }
+  .cb__form input:not([type='checkbox']), .cb__form textarea { font: inherit; padding: 0.8rem 0.9rem; border: 1.5px solid rgba(1,1,1,0.25); background: var(--c-paper); border-radius: 0; color: var(--c-black); width: 100%; }
+  .cb__form input:focus, .cb__form textarea:focus { outline: none; border-color: var(--c-coral); background: var(--c-white); }
+  .cb__ticks { border: 0; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+  .cb__ticks legend { margin-bottom: 0.6rem; }
+  .cb__tick { position: relative; cursor: pointer; }
+  .cb__tick input { position: absolute; opacity: 0; }
+  .cb__tick span { display: flex; align-items: center; min-height: 46px; padding: 0.5rem 0.75rem; border: 1.5px solid rgba(1,1,1,0.18); font-weight: 500; font-size: 0.92rem; line-height: 1.25; transition: background var(--dur-fast), border-color var(--dur-fast); }
+  .cb__tick input:checked + span { background: var(--c-coral); border-color: var(--c-coral); }
+  .cb__tick input:focus-visible + span { outline: 2px solid var(--c-black); outline-offset: 2px; }
+  .cb__consent { flex-direction: row !important; align-items: flex-start; gap: 0.6rem !important; font-size: 0.92rem; }
+  .cb__consent input { margin-top: 0.25rem; accent-color: var(--c-coral); }
+  .cb__form .btn { align-self: flex-start; }
+  @media (max-width: 900px) {
+    .cb__grid { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
+    .cb__info { position: static; }
+    .cb__ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) { .cb__row { grid-template-columns: minmax(0, 1fr); } }
+</style>
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const pkg = new URLSearchParams(location.search).get('package') || form.dataset.preselect;
+    const box = pkg && form.querySelector<HTMLInputElement>(`input[data-slug="${CSS.escape(pkg)}"]`);
+    if (box) box.checked = true;
+    form.addEventListener('submit', (e) => {
+      const ticks = form.querySelectorAll('input[name="query"]:checked');
+      if (!ticks.length) { e.preventDefault(); (form.querySelector('input[name="query"]') as HTMLInputElement).focus(); alert('Please tick what your query is regarding.'); }
+    });
+  }
+</script>

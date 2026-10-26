@@ -1,0 +1,35 @@
+---
+// Northern Outliers signature: a backline move on a tactics board, ending in a try.
+import { northern } from '../../data/site';
+const motto = northern.pillars[3].d.split('– ')[1]; // "Better People make Better Players!"
+---
+<figure class="rp" data-rugby data-state="pre">
+  <div class="rp__board"><canvas class="rp__cv" aria-hidden="true"></canvas></div>
+  <figcaption class="rp__cap">
+    <span class="sr-only">A rugby backline move: the ball is passed along the line, the 13 breaks through a gap and the winger scores.</span>
+    <p class="rp__motto">{motto}</p>
+    <ul class="rp__cs">{northern.pillars.map((p) => <li class="label">{p.t}</li>)}</ul>
+  </figcaption>
+  <button class="rp__replay label" data-replay hidden>↻ Replay</button>
+</figure>
+<style>
+  .rp { position: relative; margin: 0; }
+  .rp__board { perspective: 1100px; perspective-origin: 50% 0%; }
+  .rp__cv { display: block; width: 100%; aspect-ratio: 70 / 64; transform: rotateX(34deg) scale(0.94); transform-origin: 50% 100%; margin-top: -9%; box-shadow: 0 40px 80px -30px rgba(255, 97, 87, 0.25); }
+  .rp__cap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.75rem 1.5rem; margin-top: var(--sp-2); padding-top: var(--sp-2); border-top: 1px solid var(--c-line); transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out); }
+  .rp__motto { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-size: clamp(1rem, 0.7rem + 0.9vw, 1.5rem); line-height: 1.05; }
+  .rp__cs { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; color: var(--c-coral); }
+  .rp[data-state='pre'] .rp__cap, .rp[data-state='run'] .rp__cap { opacity: 0; transform: translateY(8px); }
+  .rp__replay { position: absolute; right: 0; top: 0; z-index: 2; padding: 0.45rem 0.7rem; border: 1px solid var(--c-line); background: rgba(1,1,1,0.5); color: var(--c-white); }
+  .rp__replay:hover { color: var(--c-coral); border-color: var(--c-coral); }
+</style>
+<script>
+  import { createRugby, T_END } from '../../scripts/rugby.js';
+  import { playOnView } from '../../scripts/playOnView.js';
+  const root = document.querySelector<HTMLElement>('[data-rugby]');
+  const cv = root?.querySelector('canvas');
+  if (root && cv) {
+    const r = createRugby(cv);
+    playOnView(root, { duration: T_END, draw: r.draw, resize: r.resize });
+  }
+</script>

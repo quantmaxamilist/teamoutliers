@@ -1,0 +1,65 @@
+:root {
+  /* Brand: sampled from the old site's Astra globals (#010101 / #ff6157) and the logo files */
+  --c-black: #010101;
+  --c-stage: #0c0c0d;
+  --c-stage-2: #161618;
+  --c-coral: #ff6157;
+  --c-coral-deep: #e84a40;
+  --c-paper: #f2f2f0;
+  --c-white: #ffffff;
+  --c-line: rgba(255, 255, 255, 0.14);
+  --c-line-dark: rgba(1, 1, 1, 0.12);
+  --c-mute: rgba(255, 255, 255, 0.66);
+  --c-mute-dark: rgba(1, 1, 1, 0.62);
+
+  /* The slash: the angle of the stroke through the Outliers "O" */
+  --slash: 14deg;
+  --slash-x: 18%;
+
+  /* Type */
+  --f-display: 'Archivo Variable', 'Arial Black', sans-serif;
+  --f-text: 'Geist Sans', system-ui, sans-serif;
+  --f-mono: 'Geist Mono', ui-monospace, monospace;
+  --display-wdth: 118;
+
+  --fs-hero: clamp(2.125rem, 4.4vw, 5.75rem);
+  --fs-display-1: clamp(2.5rem, 1rem + 5.6vw, 7.5rem);
+  --fs-display-2: clamp(1.875rem, 0.6rem + 3.4vw, 4.25rem);
+  --fs-display-3: clamp(1.375rem, 0.7rem + 1.9vw, 2.75rem);
+  --fs-statement: clamp(1.25rem, 0.9rem + 1.3vw, 2.125rem);
+  --fs-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-label: 0.75rem;
+
+  /* Space */
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2rem;
+  --sp-5: 3rem;
+  --sp-6: 4.5rem;
+  --sp-7: clamp(4.5rem, 3rem + 6vw, 9rem);
+  --container: 1360px;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --header-h: 72px;
+  --radius: 4px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.2s;
+  --dur: 0.45s;
+  --dur-slow: 0.8s;
+
+  /* Layers */
+  --z-base: 1;
+  --z-sticky: 50;
+  --z-header: 100;
+  --z-menu: 200;
+  --z-transition: 300;
+  --z-cursor: 400;
+}
+@media (max-width: 760px) {
+  :root { --header-h: 62px; }
+}

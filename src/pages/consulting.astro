@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/page/PageHero.astro';
+import StrandBar from '../components/page/StrandBar.astro';
+import Img from '../components/site/Img.astro';
+import ContactBlock from '../components/contact/ContactBlock.astro';
+import { titles, consulting } from '../data/site';
+---
+<Base title={titles.consulting} description={consulting.text[0]}>
+  <PageHero kicker="03 — Consulting · Schools & Clubs" title={consulting.title} lead={consulting.lead} img="coach-field" pos="50% 40%"
+    cta={[{ label: 'Work With Outliers', href: '#touch' }]} />
+  <StrandBar current="consulting" />
+
+  <section class="light section">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="statement" data-reveal>{consulting.text[0]}</p>
+        <p class="lead mute" data-reveal>{consulting.text[1]}</p>
+      </div>
+    </div>
+  </section>
+
+  {consulting.blocks.map((b, i) => (
+    <section class:list={['section', i % 2 ? 'light' : 'dark']}>
+      <div class:list={['wrap split', { 'split--rev': i % 2 }]}>
+        <figure class:list={['photo split__photo', i % 2 ? 'cut-l' : 'cut-r']} data-reveal><Img name={b.img} alt={["Outliers education session with young athletes", "Schools rugby coaching with Outliers", "An Outliers coach-led skills session"][i]} /></figure>
+        <div class="stack">
+          <p class="label kicker" data-reveal>0{i + 1}</p>
+          <h2 class="h-2" data-reveal>{b.t}</h2>
+          <div class:list={['prose', { mute: !(i % 2) }]} data-reveal>{b.p.map((t) => <p>{t}</p>)}</div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="coral section">
+    <div class="wrap work">
+      <h2 class="h-2" data-reveal>{consulting.workTitle}</h2>
+      <p class="lead" style="font-weight:500" data-reveal>{consulting.work}</p>
+    </div>
+  </section>
+
+  <ContactBlock id="touch" title={consulting.touchTitle} preselect="schools-and-clubs" />
+</Base>
+<style>
+  .work { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); align-items: end; }
+  @media (max-width: 900px) { .work { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); } }
+</style>

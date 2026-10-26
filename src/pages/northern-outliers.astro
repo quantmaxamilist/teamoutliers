@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+import MotionHero from '../components/page/MotionHero.astro';
+import RugbyPlay from '../components/strand/RugbyPlay.astro';
+import StrandBar from '../components/page/StrandBar.astro';
+import Img from '../components/site/Img.astro';
+import EnquiryBand from '../components/site/EnquiryBand.astro';
+import Marquee from '../components/site/Marquee.astro';
+import NextSession from '../components/site/NextSession.astro';
+import { titles, northern, home } from '../data/site';
+const ext = { target: '_blank', rel: 'noopener' };
+---
+<Base title={titles.northern} description={northern.visionLead + northern.vision}>
+  <MotionHero kicker="02 — Northern Outliers · Rugby" title="Northern Outliers" lead={northern.intro} img="rugby-drill" pos="40% 50%"
+    cta={[{ label: northern.signupLabel, href: northern.signup, ext: true }, { label: 'Block dates', href: '#dates' }]}>
+    <RugbyPlay />
+  </MotionHero>
+  <StrandBar current="northern-outliers" />
+  {/* Slogan from the club's own squad photo (built-northern-built-different) */}
+  <Marquee items={['Built Northern', 'Built Different']} tone="coral" />
+
+  <section class="light section">
+    <div class="wrap split">
+      <div class="stack">
+        <p class="label kicker" data-reveal>{northern.visionLead}</p>
+        <p class="statement" data-reveal>{northern.vision}</p>
+        <div class="prose" data-reveal>{northern.text.map((t) => <p>{t}</p>)}</div>
+        <div class="prose mute" data-reveal>{northern.pathway.map((t) => <p>{t}</p>)}</div>
+      </div>
+      <figure class="photo split__photo wide cut-l" data-reveal><Img name="northern-squad" alt="The Northern Outliers squad: Built Northern, Built Different" /></figure>
+    </div>
+  </section>
+
+  <section id="dates" class="dark section">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="stack">
+          <p class="label kicker" data-reveal>{home.northernNews}</p>
+          <h2 class="h-2" data-reveal>{northern.datesTitle}</h2>
+        </div>
+        <div class="stack">
+          <p class="lead mute" data-reveal>{northern.datesLead}</p>
+          <NextSession tone="dark" />
+        </div>
+      </div>
+      <p class="label mute" data-reveal>{northern.datesIntro}</p>
+      <ol class="cal" data-reveal>
+        {northern.dates.map((d) => (
+          <li class:list={{ 'is-off': d.d === 'BREAK', 'is-tbc': d.d.startsWith('TBC') }}>
+            <span class="cal__m">{d.m}</span>
+            <span class="cal__d">{d.d}</span>
+          </li>
+        ))}
+      </ol>
+      <div class="join" data-reveal>
+        <p class="lead">{northern.joinTitle}</p>
+        <div class="join__cta">
+          <a href={northern.signup} class="btn btn--coral" {...ext}>{northern.signupLabel}</a>
+          <a href={northern.spond} class="ulink" {...ext}>{northern.spondLabel}</a>
+          <span class="mute">{northern.spondOr}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="white section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="h-2" data-reveal>{northern.diffTitle}</h2>
+        <p class="lead" data-reveal>{northern.diffLead}</p>
+      </div>
+      <p class="label kicker" data-reveal>{northern.holisticTitle}</p>
+      <ol class="cs">
+        {northern.pillars.map((p) => (
+          <li data-reveal>
+            <span class="cs__c">{p.t.charAt(0)}</span>
+            <h3 class="h-3" style="font-size:1.5rem">{p.t}</h3>
+            <p>{p.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="dark gal" aria-label="Northern Outliers photos">
+    <div class="gal__grid">
+      {northern.gallery.map((g, i) => (
+        <figure class={`photo gal__i gal__i--${i}`} data-reveal><Img name={g} alt={`Northern Outliers training, photo ${i + 1} of ${northern.gallery.length}`} sizes="(max-width: 760px) 50vw, 33vw" /></figure>
+      ))}
+    </div>
+  </section>
+
+  <section class="light section">
+    <div class="wrap shop">
+      <div class="stack">
+        <h2 class="h-2" data-reveal>{northern.shopTitle}</h2>
+        <p class="lead" data-reveal>{northern.shopText}</p>
+        <div class="shop__cta" data-reveal>
+          <a href="/shop" class="btn btn--black">{northern.shopCta}</a>
+          <a href={northern.shop} class="ulink label" {...ext}>All kit on Halbro Sportswear ↗</a>
+        </div>
+      </div>
+      <figure class="shop__kit" data-reveal><Img name="kit" alt="Northern Outliers kit: shirts, hoodie and shorts" sizes="(max-width: 900px) 100vw, 55vw" /></figure>
+    </div>
+  </section>
+
+  <EnquiryBand package="northern-outliers" />
+</Base>
+<style>
+  .cal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin-top: var(--sp-2); background: var(--c-line); border: 2px solid var(--c-line); }
+  .cal li { background: var(--c-stage); padding: var(--sp-3); display: flex; flex-direction: column; gap: 0.5rem; min-height: 9rem; }
+  .cal__m { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 125; font-size: var(--fs-display-3); line-height: 1; color: var(--c-coral); }
+  .cal__d { font-weight: 600; font-size: 1.1rem; }
+  .cal .is-off { background: var(--c-stage-2); }
+  .cal .is-off .cal__m, .cal .is-off .cal__d { color: var(--c-mute); }
+  .join { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--sp-4); align-items: center; margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--c-line); }
+  .join__cta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; }
+  .join__cta .ulink { font-weight: 600; overflow-wrap: anywhere; }
+  .cs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-3); margin-top: var(--sp-3); }
+  .cs li { display: flex; flex-direction: column; gap: var(--sp-2); padding-top: var(--sp-3); border-top: 2px solid var(--c-black); }
+  .cs__c { font-family: var(--f-display); font-style: italic; font-weight: 900; font-variation-settings: 'wdth' 125; font-size: var(--fs-display-1); line-height: 0.8; color: var(--c-coral); }
+  .gal__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: clamp(140px, 18vw, 300px); gap: 4px; }
+  .gal__i--0 { grid-column: span 3; grid-row: span 2; }
+  .gal__i--1, .gal__i--2 { grid-column: span 3; }
+  .gal__i--3 { grid-column: span 2; }
+  .gal__i--4 { grid-column: span 2; }
+  .gal__i--5 { grid-column: span 2; }
+  .shop { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--sp-5); align-items: center; }
+  .shop__cta { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); align-items: center; }
+  .shop__kit { background: var(--c-white); padding: var(--sp-3); }
+  .shop__kit :global(img) { width: 100%; }
+  @media (max-width: 900px) {
+    .cal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cal li { min-height: 0; }
+    .join, .shop { grid-template-columns: minmax(0, 1fr); }
+    .cs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .gal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 42vw; }
+    .gal__grid > * { grid-column: span 1 !important; grid-row: span 1 !important; }
+    .gal__i--0 { grid-column: span 2 !important; }
+  }
+  @media (max-width: 520px) { .cs { grid-template-columns: minmax(0, 1fr); } }
+</style>

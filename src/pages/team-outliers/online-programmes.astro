@@ -1,0 +1,80 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/page/PageHero.astro';
+import StrandBar from '../../components/page/StrandBar.astro';
+import Img from '../../components/site/Img.astro';
+import EnquiryBand from '../../components/site/EnquiryBand.astro';
+import { titles, online } from '../../data/site';
+const { performance: perf, bespoke, resilience } = online;
+---
+<Base title={titles.online} description={perf.sub + ' ' + perf.text[0]}>
+  <PageHero kicker="Team Outliers · Online Programmes" title={perf.title} lead={perf.sub} img="kettlebell" pos="60% 40%"
+    cta={[{ label: 'Sign Up', href: '/contact?package=performance-programme' }, { label: 'Book a Call', href: '/contact?package=bespoke-coaching' }]} />
+  <StrandBar current="team-outliers" />
+
+  <section id="performance" class="light section">
+    <div class="wrap split">
+      <div class="stack">
+        <p class="label kicker" data-reveal>01 — Online</p>
+        <h2 class="h-2" data-reveal>{perf.title}</h2>
+        <div class="prose" data-reveal>{perf.text.map((t) => <p>{t}</p>)}</div>
+        <p class="price" data-reveal>{perf.fee}</p>
+        <a href="/contact?package=performance-programme" class="btn btn--black" data-reveal>{perf.cta}</a>
+      </div>
+      <figure class="photo split__photo cut-l" data-reveal><Img name="shot-put" alt="An Outliers athlete in competition" /></figure>
+    </div>
+  </section>
+
+  <section id="bespoke" class="dark section">
+    <div class="wrap split split--rev">
+      <div class="stack">
+        <p class="label kicker" data-reveal>02 — Bespoke</p>
+        <h2 class="h-2" data-reveal>{bespoke.title}</h2>
+        <p class="statement" data-reveal>{bespoke.sub}</p>
+        <div class="prose mute" data-reveal>{bespoke.text.map((t) => <p>{t}</p>)}</div>
+        <a href="/contact?package=bespoke-coaching" class="btn btn--coral" data-reveal>{bespoke.cta}</a>
+      </div>
+      <figure class="photo split__photo cut-r" data-reveal><Img name="track-trio" alt="Outliers athletes at the track" /></figure>
+    </div>
+  </section>
+
+  <section id="resilience" class="light section">
+    <div class="wrap split">
+      <div class="stack">
+        <p class="label kicker" data-reveal>03 — Resilience</p>
+        <h2 class="h-2" data-reveal>{resilience.title}</h2>
+        <div class="prose" data-reveal>{resilience.text.map((t) => <p>{t}</p>)}</div>
+        <p class="price" data-reveal>{resilience.fee}</p>
+        <a href="/contact?package=resilience-programme" class="btn btn--black" data-reveal>{resilience.cta}</a>
+      </div>
+      <figure class="photo split__photo wide cut-l" data-reveal><Img name="hike" alt="Staying active outdoors" /></figure>
+    </div>
+  </section>
+
+  <section class="white section">
+    <div class="wrap faq">
+      <h2 class="h-2" data-reveal>{online.faqTitle}</h2>
+      <div>
+        {online.faq.map((f) => (
+          <details class="faq__item" data-reveal>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <EnquiryBand />
+</Base>
+<style>
+  .faq { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: var(--sp-6); }
+  .faq__item { border-top: 2px solid var(--c-black); }
+  .faq__item:last-child { border-bottom: 2px solid var(--c-black); }
+  .faq__item summary { list-style: none; cursor: pointer; padding: 1.2rem 2.5rem 1.2rem 0; font-weight: 600; font-size: 1.1rem; position: relative; }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after { content: '+'; position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 1.6rem; color: var(--c-coral-deep); transition: transform var(--dur) var(--ease-out); }
+  .faq__item[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  .faq__item p { padding-bottom: 1.4rem; max-width: 64ch; }
+  @media (max-width: 900px) { .faq { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); } }
+</style>

@@ -1,0 +1,24 @@
+# Old → new URLs
+
+| Old (teamoutliers.com) | New |
+|---|---|
+| /outliers-services/ | /team-outliers |
+| /outliers-online-programmes/ | /team-outliers/online-programmes |
+| /outliers-services/team-outliers-classes/ | /team-outliers/classes |
+| /outliers-services/team-outliers-classes/intro-to-womens-sc-sign-up/ | /contact?package=classes |
+| /physiotherapy/ | /team-outliers/physiotherapy |
+| /physiotherapy/outliers-physio-enquire-form/ | /contact?package=physiotherapy |
+| /outliers-physiotherapy/outliers-physio-enquire-form/ | /contact?package=physiotherapy |
+| /outliers-performance-sign-up/ | /contact?package=performance-programme |
+| /outliers-resilience-programme/ | /contact?package=resilience-programme |
+| /outliers-bespoke-contact-us/ | /contact?package=bespoke-coaching |
+| /outliers-fundamentals/ | /team-outliers |
+| /northern-outliers-rugby/ | /northern-outliers |
+| /1st-block-payment/ | /northern-outliers |
+| /schools-and-clubs/ | /consulting |
+| /the-outliers-method-methodology/ | /method |
+| /methodology/ | /method |
+| /about-us/ | /team |
+| /contact-us/ | /contact |
+| /terms-and-conditions/ | /terms |
+| /privacy-policy-2/ | /privacy |

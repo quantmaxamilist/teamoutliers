@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/page/PageHero.astro';
+import StrandBar from '../../components/page/StrandBar.astro';
+import Img from '../../components/site/Img.astro';
+import EnquiryBand from '../../components/site/EnquiryBand.astro';
+import { titles, classesPage, services } from '../../data/site';
+const { intro, sc, soon } = classesPage;
+---
+<Base title={titles.classes} description={`When: ${intro.when} Where: ${intro.where}`}>
+  <PageHero kicker="Team Outliers · Classes" title={services.classesTitle} lead={services.classesLead} img="class-women" pos="50% 40%"
+    cta={[{ label: 'Sign Up', href: '/contact?package=classes' }]} />
+  <StrandBar current="team-outliers" />
+
+  <section class="light section">
+    <div class="wrap split">
+      <div class="stack">
+        <h2 class="h-2" data-reveal>{intro.title}</h2>
+        <dl class="facts" data-reveal>
+          <div><dt class="label">When</dt><dd>{intro.when}</dd></div>
+          <div><dt class="label">Where</dt><dd>{intro.where}</dd></div>
+          <div><dt class="label">Suitable for</dt><dd>{intro.suitable}</dd></div>
+        </dl>
+        <div class="prose" data-reveal>{intro.text.map((t) => <p>{t}</p>)}</div>
+        <p class="note" data-reveal>{intro.note}</p>
+        <p class="price" data-reveal>{intro.price}</p>
+        <p class="mute" data-reveal>{intro.signup}</p>
+        <a href="/contact?package=classes" class="btn btn--black" data-reveal>{intro.cta}</a>
+      </div>
+      <div class="pair">
+        <figure class="photo cut-l" data-reveal><Img name="class-women" alt="Three women engaged in a workout session in a gym, focusing on strength and balance." /></figure>
+        <figure class="photo cut-r" data-reveal><Img name="barbell" alt="Athlete tightening barbell plates in a gym, emphasizing fitness and strength." /></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark section">
+    <div class="wrap split split--rev">
+      <div class="stack">
+        <p class="label kicker" data-reveal>{sc.when}</p>
+        <h2 class="h-2" data-reveal>{sc.title}</h2>
+        <div class="prose mute" data-reveal>{sc.text.map((t) => <p>{t}</p>)}</div>
+        <a href="/contact?package=classes" class="btn btn--coral" data-reveal>{sc.cta}</a>
+      </div>
+      <figure class="photo split__photo wide cut-r" data-reveal><Img name="gym-coaching" alt="A coached strength and conditioning session" /></figure>
+    </div>
+  </section>
+
+  <section class="white section">
+    <div class="wrap soon">
+      <p class="label kicker" data-reveal>{soon.sub}</p>
+      <h2 class="h-2" data-reveal>{soon.title}</h2>
+      <div class="prose lead" data-reveal>{soon.text.map((t) => <p>{t}</p>)}</div>
+    </div>
+  </section>
+
+  <EnquiryBand package="classes" />
+</Base>
+<style>
+  .facts { display: grid; gap: 0; border-top: 2px solid var(--c-black); width: 100%; margin: 0; }
+  .facts div { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--sp-2); padding: 0.75rem 0; border-bottom: 1px solid var(--c-line-dark); }
+  .facts dt { color: var(--c-coral-deep); padding-top: 0.2rem; }
+  .facts dd { margin: 0; font-weight: 600; }
+  .note { font-weight: 600; border-left: 4px solid var(--c-coral); padding-left: var(--sp-2); }
+  .pair { display: grid; gap: var(--sp-2); }
+  .pair .photo { aspect-ratio: 3 / 2; }
+  .soon { display: flex; flex-direction: column; gap: var(--sp-3); }
+  @media (max-width: 520px) { .facts div { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; } }
+</style>

@@ -1,0 +1,57 @@
+---
+import Img from '../site/Img.astro';
+import { home, testimonials } from '../../data/site';
+---
+<section class="tst dark section" aria-labelledby="tst-h">
+  <div class="wrap tst__head">
+    <div>
+      <p class="label tst__kicker" data-reveal>{home.testimonialsKicker}</p>
+      <h2 id="tst-h" class="h-2" data-reveal>{home.testimonialsTitle}</h2>
+    </div>
+    <div class="tst__nav" data-reveal>
+      <button class="tst__btn" data-tst-prev aria-label="Previous testimonial">←</button>
+      <button class="tst__btn" data-tst-next aria-label="Next testimonial">→</button>
+    </div>
+  </div>
+  <div class="tst__track" data-tst-track tabindex="0" aria-label="Testimonials">
+    {testimonials.map((t, i) => (
+      <figure class="tst__card">
+        <blockquote class="tst__quote">“{t.quote}”</blockquote>
+        <figcaption class="tst__by">
+          {t.img ? <span class="tst__face photo"><Img name={t.img} alt="" sizes="64px" /></span> : <span class="tst__face tst__face--blank" aria-hidden="true"></span>}
+          <span><strong>{t.name}</strong><span class="label mute">{`${i + 1} of ${testimonials.length}`}</span></span>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+<style>
+  .tst__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--sp-3); margin-bottom: var(--sp-5); }
+  .tst__kicker { color: var(--c-coral); margin-bottom: var(--sp-2); }
+  .tst__nav { display: flex; gap: 0.5rem; }
+  .tst__btn { width: 52px; height: 52px; border: 1.5px solid var(--c-line); font-size: 1.2rem; transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); }
+  .tst__btn:hover { background: var(--c-coral); border-color: var(--c-coral); color: var(--c-black); }
+  .tst__track {
+    display: grid; grid-auto-flow: column; grid-auto-columns: min(560px, 82vw); gap: var(--sp-3);
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+    overscroll-behavior-x: contain;
+  }
+  .tst__track::-webkit-scrollbar { display: none; }
+  .tst__card { scroll-snap-align: start; background: var(--c-stage-2); padding: var(--sp-4); display: flex; flex-direction: column; justify-content: space-between; gap: var(--sp-4); border-top: 4px solid var(--c-coral); }
+  .tst__quote { font-size: 1.05rem; line-height: 1.6; }
+  .tst__by { display: flex; align-items: center; gap: var(--sp-2); }
+  .tst__by > span:last-child { display: flex; flex-direction: column; }
+  .tst__face { width: 56px; height: 56px; flex: none; border-radius: 50%; overflow: hidden; }
+  .tst__face--blank { background: var(--c-stage); border: 1px solid var(--c-line); }
+  .tst__face::after { display: none; }
+</style>
+<script>
+  const track = document.querySelector<HTMLElement>('[data-tst-track]');
+  if (track) {
+    const step = () => (track.querySelector('.tst__card') as HTMLElement).offsetWidth + 24;
+    document.querySelector('[data-tst-prev]')?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    document.querySelector('[data-tst-next]')?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+  }
+</script>

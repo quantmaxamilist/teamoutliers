@@ -1,0 +1,37 @@
+---
+// Wayfinding between the three businesses, shown under each strand page hero.
+import { strands } from '../../data/site';
+interface Props { current: string }
+const { current } = Astro.props;
+---
+<nav class="sb" aria-label="Outliers strands">
+  <div class="wrap sb__in">
+    {strands.map((s, i) => (
+      <a href={s.href} class:list={['sb__item', { 'is-current': s.slug === current }]} aria-current={s.slug === current ? 'page' : undefined}>
+        <span class="label sb__n">0{i + 1}</span>
+        <span class="sb__name">{s.name}</span>
+        <span class="label sb__tag">{s.tag}</span>
+      </a>
+    ))}
+  </div>
+</nav>
+<style>
+  .sb { background: var(--c-stage); border-bottom: 1px solid var(--c-line); }
+  .sb__in { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sb__item { position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: 0.75rem; padding: 1.1rem 1rem 1.1rem 0; color: var(--c-mute); transition: color var(--dur-fast); }
+  .sb__item + .sb__item { padding-left: 1.25rem; border-left: 1px solid var(--c-line); }
+  .sb__item::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px; background: var(--c-coral); transform: scaleX(0); transform-origin: left; transition: transform var(--dur) var(--ease-out); }
+  .sb__item:hover, .sb__item.is-current { color: var(--c-white); }
+  .sb__item:hover::after, .sb__item.is-current::after { transform: scaleX(1); }
+  .sb__n { color: var(--c-coral); grid-row: span 2; padding-top: 0.2rem; }
+  .sb__name { font-family: var(--f-display); font-style: italic; font-weight: 900; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-size: 1.05rem; }
+  .sb__tag { font-size: 0.68rem; }
+  @media (max-width: 760px) {
+    .sb__item { grid-template-columns: minmax(0, 1fr); padding: 0.8rem 0.5rem 0.8rem 0; }
+    .sb__item + .sb__item { padding-left: 0.6rem; }
+    .sb__n { grid-row: auto; }
+    .sb__name { font-size: 0.8rem; line-height: 1.15; }
+    .sb__tag { display: none; }
+  }
+  @media (max-width: 360px) { .sb__name { font-size: 0.68rem; overflow-wrap: anywhere; } }
+</style>

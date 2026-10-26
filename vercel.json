@@ -1,0 +1,106 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/outliers-services",
+      "destination": "/team-outliers",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-online-programmes",
+      "destination": "/team-outliers/online-programmes",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-services/team-outliers-classes",
+      "destination": "/team-outliers/classes",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-services/team-outliers-classes/intro-to-womens-sc-sign-up",
+      "destination": "/contact?package=classes",
+      "permanent": true
+    },
+    {
+      "source": "/physiotherapy",
+      "destination": "/team-outliers/physiotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/physiotherapy/outliers-physio-enquire-form",
+      "destination": "/contact?package=physiotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-physiotherapy/outliers-physio-enquire-form",
+      "destination": "/contact?package=physiotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-performance-sign-up",
+      "destination": "/contact?package=performance-programme",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-resilience-programme",
+      "destination": "/contact?package=resilience-programme",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-bespoke-contact-us",
+      "destination": "/contact?package=bespoke-coaching",
+      "permanent": true
+    },
+    {
+      "source": "/outliers-fundamentals",
+      "destination": "/team-outliers",
+      "permanent": true
+    },
+    {
+      "source": "/northern-outliers-rugby",
+      "destination": "/northern-outliers",
+      "permanent": true
+    },
+    {
+      "source": "/1st-block-payment",
+      "destination": "/northern-outliers",
+      "permanent": true
+    },
+    {
+      "source": "/schools-and-clubs",
+      "destination": "/consulting",
+      "permanent": true
+    },
+    {
+      "source": "/the-outliers-method-methodology",
+      "destination": "/method",
+      "permanent": true
+    },
+    {
+      "source": "/methodology",
+      "destination": "/method",
+      "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "destination": "/team",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/terms-and-conditions",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy-2",
+      "destination": "/privacy",
+      "permanent": true
+    }
+  ]
+}
